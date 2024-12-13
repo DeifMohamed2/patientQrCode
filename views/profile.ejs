@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= patient.name %> Profile</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/scripts.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    
+    <header>
+        <div class="container">
+            <h1>Welcome, <%= patient.name %></h1>
+            <% if (isEditable) { %>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            <% }else{ %>
+           <a href="/"><button class="logout-btn" >Make Account</button></a>
+
+           <%  } %>
+        </div>
+    </header>
+
+    <main>
+        <section class="profile-container">
+            <div class="profile-info">
+                <div class="profile-header">
+                    <h2><%= patient.name.split(' ')[0] %>'s Profile</h2>
+                    <% if (isEditable) { %>
+                    <div class="qr-section">
+                        <img src="<%= qrCode %>" alt="QR Code" class="qr-code">
+
+                    </div>
+                    <a href="<%= qrCode %>" download="QR_Code.png" class="btn download-btn">Download QR</a>
+                    <% } %>
+                    <div class="basic-info">
+                        <p><strong>Name:</strong> <%= patient.name %></p>
+                        <p><strong>Email:</strong> <%= patient.email %></p>
+                    </div>
+                </div>
+            </div>
+
+          <section class="uploads">
+    <h2>Your Files</h2>
+    <div class="upload-categories">
+        <button class="tab-btn active" onclick="showSection('photos')">Photos</button>
+        <button class="tab-btn" onclick="showSection('pdfs')">PDFs</button>
+        <button class="tab-btn" onclick="showSection('docs')">Documents</button>
+    </div>
+
+    <div id="photos" class="upload-section active">
+        <h3>Photos</h3>
+        <div class="file-grid">
+            <% files.filter(file => file.type === 'photo').forEach(photo => { %>
+                <div class="file-item">
+                    <i class="fas fa-image file-preview"></i>
+                    <div class="file-info">
+                        <h4 class="file-title"><%= photo.title %></h4>
+                        <p class="file-description">
+                            <span class="short-description"><%= photo.description.substring(0, 100) %></span>
+                            <span class="full-description"><%= photo.description %></span>
+                        </p>
+                        <button class="see-more-btn" onclick="toggleDescription(this)">See More</button>
+                        <a href="<%= photo.url %>" target="_blank" class="btn view-btn">View</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <div id="pdfs" class="upload-section">
+        <h3>PDFs</h3>
+        <div class="file-grid">
+            <% files.filter(file => file.type === 'pdf').forEach(pdf => { %>
+                <div class="file-item">
+                    <i class="fas fa-file-pdf file-preview"></i>
+                    <div class="file-info">
+                        <h4 class="file-title"><%= pdf.title %></h4>
+                        <p class="file-description">
+                            <span class="short-description"><%= pdf.description.substring(0, 100) %></span>
+                            <span class="full-description"><%= pdf.description %></span>
+                        </p>
+                        <button class="see-more-btn" onclick="toggleDescription(this)">See More</button>
+                        <a href="<%= pdf.url %>" target="_blank" class="btn view-btn">View</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <div id="docs" class="upload-section">
+        <h3>Documents</h3>
+        <div class="file-grid">
+            <% files.filter(file => file.type === 'document').forEach(doc => { %>
+                <div class="file-item">
+                    <i class="fas fa-file-alt file-preview"></i>
+                    <div class="file-info">
+                        <h4 class="file-title"><%= doc.title %></h4>
+                        <p class="file-description">
+                            <span class="short-description"><%= doc.description.substring(0, 100) %></span>
+                            <span class="full-description"><%= doc.description %></span>
+                        </p>
+                        <button class="see-more-btn" onclick="toggleDescription(this)">See More</button>
+                        <a href="<%= doc.url %>" target="_blank" class="btn view-btn">View</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+
+            <% if (isEditable) { %>
+                <section class="file-upload">
+                    <h2>Upload New Files</h2>
+                    <form id="uploadFileForm" class="upload-form">
+                      
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" required class="upload-input">
+
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" rows="4" required class="upload-input"></textarea>
+                        <label for="fileType">File Type:</label>
+                        <select id="fileType" name="fileType" required class="upload-input">
+                            <option value="photo">Photo</option>
+                            <option value="pdf">PDF</option>
+                            <option value="doc">Document</option>
+                        </select>
+                        <input type="file" id="file" name="file" required class="upload-input">
+                        <progress id="progressBar" value="0" max="100"></progress>
+                        <button type="submit" class="btn upload-btn">Upload</button>
+                    </form>
+                </section>
+            <% } %>
+        </section>
+    </main>
+
+
+<!-- Use ES modules for Firebase v9+ -->
+<script type="module">
+  // Import Firebase app and storage modules
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+  import { getStorage, ref, uploadBytes, getDownloadURL ,uploadBytesResumable } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js';
+
+  // Firebase configuration
+ const firebaseConfig = {
+  apiKey: "AIzaSyBTQxsd7Rp3BHB6vdoV8qA3gkkk0I9LTy4",
+  authDomain: "momken-12.firebaseapp.com",
+  databaseURL: "https://momken-12-default-rtdb.firebaseio.com",
+  projectId: "momken-12",
+  storageBucket: "momken-12.appspot.com",
+  messagingSenderId: "659291993085",
+  appId: "1:659291993085:web:aa6669fa7322c390149f94"
+};
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+
+const uploadFileForm = document.getElementById('uploadFileForm');
+
+// Upload file to Firebase Storage with progress
+
+async function uploadFile(file) {
+  const fileRef = ref(storage, `uploads/${file.name}`);
+  const uploadTask = uploadBytesResumable(fileRef, file);
+
+  return new Promise((resolve, reject) => {
+    // Monitor the upload progress
+    uploadTask.on('state_changed', 
+      (snapshot) => {
+        // Get upload progress as a percentage
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
+        
+        // Optionally update a progress bar in the UI
+        const progressBar = document.getElementById('progressBar'); // assuming you have a progress bar element
+        if (progressBar) {
+          progressBar.value = progress;
+        }
+      },
+      (error) => {
+        console.error('Upload failed:', error);
+        reject(error);
+      },
+      async () => {
+        // Upload complete, get the download URL
+        try {
+          const downloadURL = await getDownloadURL(fileRef);
+          resolve(downloadURL); // Return the download URL
+        } catch (error) {
+          reject(error);
+        }
+      }
+    );
+  });
+}
+
+uploadFileForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+    // get form data
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const fileType = document.getElementById('fileType').value;
+    const fileInput = document.getElementById('file');
+    const file = fileInput.files[0];
+
+  try {
+    const url = await uploadFile(file);
+    console.log('File uploaded successfully: ' + url);
+
+    // object of data
+
+    const data = {
+      title,
+      description,
+      fileType,
+      url,
+    };
+
+    // Send the file URL to your server (if needed)
+    const response = await fetch('/upload', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+        console.log('File upload successful on server.');
+        // Optionally reset the form
+        window.location.reload();
+    } else {
+      throw new Error('File upload failed on server.');
+    }
+  } catch (err) {
+    console.error('Upload failed:', err);
+  }
+});
+
+</script>
+
+
+<script>
+function toggleDescription(button) {
+    const fileItem = button.closest('.file-item');
+    const fullDescription = fileItem.querySelector('.full-description');
+    const shortDescription = fileItem.querySelector('.short-description');
+    const seeMoreBtn = fileItem.querySelector('.see-more-btn');
+    
+    // Toggle the display of the full description and short description
+    if (fileItem.classList.contains('show-full')) {
+        fileItem.classList.remove('show-full');
+        seeMoreBtn.textContent = 'See More';
+    } else {
+        fileItem.classList.add('show-full');
+        seeMoreBtn.textContent = 'See Less';
+    }
+}
+
+</script>
+
+
+</body>
+</html>

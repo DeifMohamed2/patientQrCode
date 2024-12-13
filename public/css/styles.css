@@ -1,0 +1,293 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ff7f50, #ffb6c1);
+    color: #333;
+}
+
+header {
+    background: #2d3e50;
+    color: white;
+    padding: 20px;
+    border-bottom: 5px solid #ff7f50;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+button {
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    background-color: #ff7f50;
+    color: white;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #ff6347;
+}
+
+.btn {
+    background: #ff7f50;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 17px;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.btn:hover {
+    background: #ff6347;
+}
+
+/* Profile Container */
+.profile-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    text-align: center;
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.qr-section img {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.qr-section a {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.basic-info p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* File Upload Section */
+.uploads {
+    margin-top: 30px;
+}
+
+.upload-categories {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.tab-btn.active {
+    background-color: #ff7f50;
+    color: white;
+}
+
+.tab-btn:hover {
+    background-color: #ff6347;
+}
+
+.upload-section {
+    display: none;
+}
+
+.upload-section.active {
+    display: grid;
+}
+
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.file-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.file-item:hover {
+    transform: scale(1.05);
+}
+
+.file-preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.file-item .btn {
+    margin-top: 10px;
+    margin-bottom: 10px !important;
+}
+
+/* Upload Form */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.upload-input {
+    padding: 12px;
+    border: 2px solid #ff7f50;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+    background-color: #f1f1f1;
+    transition: border 0.3s ease;
+}
+
+.upload-input:focus {
+    border-color: #ff6347;
+    outline: none;
+}
+
+.upload-btn {
+    padding: 12px 20px;
+    border-radius: 5px;
+    background-color: #ff7f50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+    background-color: #ff6347;
+}
+
+/* Basic styles */
+.uploads {
+    padding: 20px;
+}
+
+.file-item {
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+    width: calc(100% - 20px); /* Adjust width as per your layout */
+    box-sizing: border-box;
+}
+
+.file-preview {
+    width: 100%;
+    height: auto;
+}
+
+/* Title and description */
+.file-info {
+    margin-top: 10px;
+}
+
+.file-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.file-description {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555;
+    display: none; /* Hide the description by default */
+}
+
+.short-description {
+    display: inline;  /* Show the short description initially */
+}
+
+.full-description {
+    display: none;  /* Hide the full description initially */
+}
+
+/* See More button */
+.see-more-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.see-more-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Active styles for displaying full description */
+.file-item.show-full .file-description {
+    display: block;
+}
+
+.file-item.show-full .short-description {
+    display: none;
+}
+
+.file-item.show-full .full-description {
+    display: inline;
+}
+
+.file-item.show-full .see-more-btn {
+    display: none; /* Hide "See More" when full description is shown */
+}
+
+
+
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .see-more-btn {
+ 
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+    .file-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab-btn {
+        padding: 8px 15px;
+    }
+
+    .upload-input {
+        max-width: 90%;
+    }
+}
