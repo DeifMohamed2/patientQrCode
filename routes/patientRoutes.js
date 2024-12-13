@@ -52,10 +52,10 @@ router.post('/login', async (req, res) => {
 router.get('/profile/:id', async (req, res) => {
   const patient = await Patient.findById(req.params.id);
   const qrCode = await QRCode.toDataURL(
-    `${req.protocol}://r9f75hc3-3000.euw.devtunnels.ms/profile/${patient._id}`
+    `${req.protocol}://www.patientqrcode.site/profile/${patient._id}`
   );
   console.log(
-    `${req.protocol}://r9f75hc3-3000.euw.devtunnels.ms/profile/${patient._id}`
+    `${req.protocol}://www.patientqrcode.site/profile/${patient._id}`
   );
   const isEditable = !!req.cookies.jwt; // Editable if logged in
 
