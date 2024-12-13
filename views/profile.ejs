@@ -12,11 +12,13 @@
     
     <header>
         <div class="container">
-            <h1>Welcome, <%= patient.name %></h1>
+     
             <% if (isEditable) { %>
+                <h1>Welcome, <%= patient.name %></h1>
                 <button class="logout-btn" onclick="logout()">Logout</button>
             <% }else{ %>
-           <a href="/"><button class="logout-btn" >Make Account</button></a>
+                <h1><%= patient.name %> Page Information</h1>
+                <a href="/"><button class="logout-btn" >Make Account</button></a>
 
            <%  } %>
         </div>
