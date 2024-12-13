@@ -17,8 +17,7 @@
                 <h1>Welcome, <%= patient.name %></h1>
                 <button class="logout-btn" onclick="logout()">Logout</button>
             <% }else{ %>
-                <h1>Welcome, To <br><%= patient.name %> Page</h1>
-                <a href="/login"><button class="logout-btn" >Login</button></a>
+                <h1><%= patient.name %> </h1>
                 <a href="/"><button class="logout-btn" >Make Account</button></a>
 
            <%  } %>
